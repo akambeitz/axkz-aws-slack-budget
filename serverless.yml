@@ -1,0 +1,55 @@
+service: slack-budget
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+#  stage: dev
+  region: us-east-2
+  # deploymentBucket: serverless-deployments
+  stackTags:
+    service: ${self:service}
+
+#  iamRoleStatements:
+#    - Effect: "Allow"
+#      Action:
+#        - "s3:ListBucket"
+#      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
+#    - Effect: "Allow"
+#      Action:
+#        - "s3:PutObject"
+#      Resource:
+#        Fn::Join:
+#          - ""
+#          - - "arn:aws:s3:::"
+#            - "Ref" : "ServerlessDeploymentBucket"
+#            - "/*"
+
+
+functions:
+  slackBudgetRead:
+    handler: handler.slackReadBudget
+    name: slack-budget-read
+    description: Handle reporting of budget DynamoDB table
+    reservedConcurrency: 1
+
+resources:
+  Resources:
+    SlackBudget:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: SlackBudget
+        AttributeDefinitions:
+          - AttributeName: pk
+            AttributeType: S
+          # - AttributeName: sk
+          #   AttributeType: S
+        KeySchema:
+          - AttributeName: pk
+            KeyType: HASH
+          # - AttributeName: sk
+          #   KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+    
