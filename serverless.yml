@@ -29,6 +29,8 @@ functions:
     name: slack-budget-read
     description: Handle reporting of budget DynamoDB table
     reservedConcurrency: 1
+    environment:
+      SLACK_INCOMING_WEBHOOK_URL: 
 
 resources:
   Resources:

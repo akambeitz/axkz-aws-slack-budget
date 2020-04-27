@@ -12,6 +12,7 @@
     "axios": "^0.19.2"
   },
   "devDependencies": {
-    "aws-sdk": "^2.662.0"
+    "aws-sdk": "^2.662.0",
+    "serverless": "^1.68.0"
   }
 }
