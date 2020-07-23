@@ -3,10 +3,10 @@ service: slack-budget
 provider:
   name: aws
   runtime: nodejs12.x
-#  stage: dev
   region: us-east-2
-  # deploymentBucket: serverless-deployments
+  deploymentBucket: axkz-serverless-deployments
   stackTags:
+    project: serverless
     service: ${self:service}
 
   iamRoleStatements:
@@ -21,33 +21,35 @@ provider:
           - "dynamodb"
           - Ref: AWS::Region
           - Ref: AWS::AccountId
-          - "table/SlackBudget"
+          - "table/budget"
 
 functions:
-  slackBudgetRead:
-    handler: handler.slackReadBudget
-    name: slack-budget-read
+  budgetReport:
+    handler: src/reportBudgetHandler.reportBudget
+    name: report-budget
     description: Handle reporting of budget DynamoDB table
     reservedConcurrency: 1
     environment:
-      SLACK_INCOMING_WEBHOOK_URL: 
+      SLACK_INCOMING_WEBHOOK_URL: TBD
+      SLACK_INCOMING_WEBHOOK_CHANNEL: TBD
+      SLACK_INCOMING_WEBHOOK_USER: TBD
 
 resources:
   Resources:
     SlackBudget:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: SlackBudget
+        TableName: budget
         AttributeDefinitions:
-          - AttributeName: pk
+          - AttributeName: window
             AttributeType: S
-          # - AttributeName: sk
-          #   AttributeType: S
+          - AttributeName: category
+            AttributeType: S
         KeySchema:
-          - AttributeName: pk
+          - AttributeName: window
             KeyType: HASH
-          # - AttributeName: sk
-          #   KeyType: RANGE
+          - AttributeName: category
+            KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1

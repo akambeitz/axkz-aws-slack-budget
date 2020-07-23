@@ -9,10 +9,12 @@
   "author": "axkz.labs@gmail.com",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.19.2"
+    "axios": "^0.19.2",
+    "axkz-node-slack-driver": "github:akambeitz/axkz-node-slack-driver",
+    "lodash.get": "^4.4.2"
   },
   "devDependencies": {
-    "aws-sdk": "^2.662.0",
+    "aws-sdk": "^2.718.0",
     "serverless": "^1.68.0"
   }
 }
