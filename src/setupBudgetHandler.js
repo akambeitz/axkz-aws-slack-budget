@@ -48,4 +48,7 @@ const setupBudget = async () => {
     return 200;
 };
 
-setupBudget().then(x => console.log(x)).catch(x => console.log(x));
+module.exports = {
+    setupBudget
+}
+// setupBudget().then(x => console.log(x)).catch(x => console.log(x));

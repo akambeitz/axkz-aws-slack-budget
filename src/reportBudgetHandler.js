@@ -28,7 +28,7 @@ const buildBudgetReport = monthlyBudgetData => {
     const sumExpenses = expenses.reduce((acc,expense) => {
       return acc + (expense.amount || 0);
     }, 0);
-    const remaining = (allowance - expenses);
+    const remaining = (allowance - sumExpenses);
     return {
       category,
       allowance,
@@ -42,6 +42,7 @@ const convertBudgetReportToSlackBlocks = budgetReport => {
   return budgetReport.map(budgetReportEntry => {
     // TODO: format category name
     const sectionText = `Category: ${budgetReportEntry.category}\n - Budget Remaining: ${budgetReportEntry.remaining} ${
+      // distinguish: full, some available, nearly empty, empty, negative, super negative
       budgetReportEntry.remaining === 0 ? ':checkered_flag:' : (budgetReportEntry.remaining > 0 ? ':white_check_mark:' : ':poop:')
     }`
     return buildSectionBlock(sectionText);
