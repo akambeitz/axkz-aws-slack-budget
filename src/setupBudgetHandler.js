@@ -45,10 +45,10 @@ const setupBudget = async () => {
         return DDB.put(params).promise();
     });
     await Promise.all(budgetMonthPutPromises);
-    return 200;
+    return {statusCode: 200};
 };
 
 module.exports = {
     setupBudget
 }
-// setupBudget().then(x => console.log(x)).catch(x => console.log(x));
+setupBudget().then(x => console.log(x)).catch(x => console.log(x));

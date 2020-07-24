@@ -5,13 +5,14 @@ const DDB = new AWS.DynamoDB.DocumentClient();
 const {slackPost} = require("axkz-node-slack-driver/src/postMessage");
 const {buildSectionBlock} = require("axkz-node-slack-driver/src/blocks/section");
 const {slackUrl, slackChannel, slackUser} = require('../sensitive');
+const {currentTimeframe} = require('./utilities');
 
-const getBudgetData = async (year, month) => {
+const getBudgetData = async (timeframe) => {
   const params = {
     TableName: "budget",
     KeyConditionExpression: "timeframe = :yymm",
     ExpressionAttributeValues: {
-        ":yymm": `${year}-${month}`
+        ":yymm": timeframe
     }
   }
   try {
@@ -62,16 +63,12 @@ const postBudgetReportToSlack = async (budgetReportForSlack) => {
 
 const reportBudget = async event => {
   try{
-    const month = event.month || "08";
-    const year = "20";
-    const monthlyBudgetData = await getBudgetData(year, month);
+    const monthlyBudgetData = await getBudgetData(currentTimeframe());
     console.log(monthlyBudgetData);
     const budgetReport = buildBudgetReport(monthlyBudgetData);
     const budgetReportForSlack = convertBudgetReportToSlackBlocks(budgetReport);
     await postBudgetReportToSlack(budgetReportForSlack);
-    return {
-      statusCode: 200,
-    };
+    return {statusCode: 200};
   }
   catch(error){
     console.log(error);
