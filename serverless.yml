@@ -6,13 +6,14 @@ provider:
   region: us-east-2
   deploymentBucket: axkz-serverless-deployments
   stackTags:
-    project: serverless
-    service: ${self:service}
+    project: budget
+    use: personal
 
   iamRoleStatements:
   - Effect: "Allow"
     Action:
-      - "dynamodb:GetItem"
+      - "dynamodb:Query"
+      - "dynamodb:UpdateItem"
     Resource: 
       Fn::Join:
         - ":"
@@ -27,12 +28,18 @@ functions:
   budgetReport:
     handler: src/reportBudgetHandler.reportBudget
     name: report-budget
-    description: Handle reporting of budget DynamoDB table
+    description: Handle reporting of current month's budget
     reservedConcurrency: 1
     environment:
-      SLACK_INCOMING_WEBHOOK_URL: TBD
-      SLACK_INCOMING_WEBHOOK_CHANNEL: TBD
-      SLACK_INCOMING_WEBHOOK_USER: TBD
+      SLACK_URL: TBD
+      SLACK_CHANNEL: TBD
+
+  budgetAddCategoryExpense:
+    handler: src/addExpenseBudgetHandler.addBudgetCategoryExpense
+    name: add-budget-category-expense
+    description: Adds a single expense entry to a budget category for the current month
+    reservedConcurrency: 1
+    environment:
 
 resources:
   Resources:
@@ -41,12 +48,12 @@ resources:
       Properties:
         TableName: budget
         AttributeDefinitions:
-          - AttributeName: window
+          - AttributeName: timeframe
             AttributeType: S
           - AttributeName: category
             AttributeType: S
         KeySchema:
-          - AttributeName: window
+          - AttributeName: timeframe
             KeyType: HASH
           - AttributeName: category
             KeyType: RANGE

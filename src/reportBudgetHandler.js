@@ -4,7 +4,6 @@ AWS.config.update({region: 'us-east-2'});
 const DDB = new AWS.DynamoDB.DocumentClient();
 const {slackPost} = require("axkz-node-slack-driver/src/postMessage");
 const {buildSectionBlock} = require("axkz-node-slack-driver/src/blocks/section");
-const {slackUrl, slackChannel, slackUser} = require('../sensitive');
 const {currentTimeframe} = require('./utilities');
 
 const getBudgetData = async (timeframe) => {
@@ -52,13 +51,13 @@ const convertBudgetReportToSlackBlocks = budgetReport => {
 
 const postBudgetReportToSlack = async (budgetReportForSlack) => {
   const body = {
-    channel: slackChannel,  // TODO: reference env variables
-    username: slackUser,
+    channel: process.env.SLACK_CHANNEL,  // TODO: reference env variables
+    username: "AxKz-Budget-Bot",
     blocks: [],
     text: ':heavy_dollar_sign:',
     icon_emoji: ':heavy_dollar_sign:'
   };
-  await slackPost(slackUrl, body, budgetReportForSlack); 
+  await slackPost(process.env.SLACK_URL, body, budgetReportForSlack); 
 };
 
 const reportBudget = async event => {

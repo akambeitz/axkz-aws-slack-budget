@@ -48,7 +48,4 @@ const setupBudget = async () => {
     return {statusCode: 200};
 };
 
-module.exports = {
-    setupBudget
-}
 setupBudget().then(x => console.log(x)).catch(x => console.log(x));

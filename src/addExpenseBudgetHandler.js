@@ -43,6 +43,8 @@ const addBudgetCategoryExpense = async event => {
     if(category === undefined || category === "") return {statusCode: 400};
     if(amount === undefined) return {statusCode: 400};
     const descriptionBase = (description !== undefined && description !== "") ? description : "No description provided";
+    const currentDate = new Date();
+    const timeframe = currentTimeframe();
     const descriptionFinal = `${currentDate.toGMTString()} : ${descriptionBase}`;
     const categoryBudgetData = await getBudgetCategoryData(currentTimeframe(), category);
     const updatedExpenses = get(categoryBudgetData, "expenses", []).concat([{
@@ -53,8 +55,6 @@ const addBudgetCategoryExpense = async event => {
     return {statusCode: 200};
 };
 
-addBudgetCategoryExpense({
-    category: "fun-alex",
-    amount: 30,
-    description: "Magic the Gathering"
-}).then(x => console.log(x)).catch(x => console.log(x));
+module.exports = {
+    addBudgetCategoryExpense
+}
