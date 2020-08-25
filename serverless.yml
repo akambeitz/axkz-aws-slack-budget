@@ -23,23 +23,26 @@ provider:
           - Ref: AWS::Region
           - Ref: AWS::AccountId
           - "table/budget"
+  environment:
+    SLACK_BOT_BEARER_TOKEN: TBD
 
 functions:
   budgetReport:
     handler: src/reportBudgetHandler.reportBudget
-    name: report-budget
+    name: slack-budget-report
     description: Handle reporting of current month's budget
     reservedConcurrency: 1
-    environment:
-      SLACK_URL: TBD
-      SLACK_CHANNEL: TBD
 
   budgetAddCategoryExpense:
     handler: src/addExpenseBudgetHandler.addBudgetCategoryExpense
-    name: add-budget-category-expense
+    name: slack-budget-add-expense
     description: Adds a single expense entry to a budget category for the current month
     reservedConcurrency: 1
-    environment:
+
+  budgetSendCategoryExpenseModal:
+    handler: src/addExpenseBudgetHandler.generateRecordExpenseModal
+    name: slack-budget-send-category-expense-modal
+    reservedConcurrency: 1
 
 resources:
   Resources:
