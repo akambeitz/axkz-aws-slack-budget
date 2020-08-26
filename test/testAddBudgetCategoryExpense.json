@@ -1,1 +1,73 @@
-{}
+{
+    "type": "view_submission",
+    "team": {
+        "id": "1234567",
+        "domain": "SLACK"
+    },
+    "user": {
+        "id": "D00D",
+        "username": "me",
+        "name": "myself",
+        "team_id": "D00D5"
+    },
+    "api_app_id": "RDM123",
+    "token": "blarg",
+    "trigger_id": "1",
+    "view": {
+        "id": "randomId",
+        "team_id": "D00D5",
+        "type": "modal",
+        "blocks": [ ],
+        "private_metadata": "{\"description\":\"SHIP IT BABYYYYYYYYYYYYY\"}",
+        "callback_id": "budget#submit-category-expense",
+        "state": {
+            "values":
+                {
+                    "budget#submit-category-expense$category": {
+                        "budget#submit-category-expense$category": {
+                            "type": "static_select",
+                            "selected_option": {
+                                "text": {
+                                    "type": "plain_text",
+                                    "text": "car-gas",
+                                    "emoji": true
+                                },
+                                "value": "car-gas"
+                            }
+                        }
+                    },
+                    "budget#submit-category-expense$expense": {
+                        "budget#submit-category-expense$expense": {
+                            "type": "plain_text_input",
+                            "value": "22"
+                        }
+                    }
+                }
+        },
+        "hash": "1598383811.valuez",
+        "title": {
+            "type": "plain_text",
+            "text": "BUDGET",
+            "emoji": true
+        },
+        "clear_on_close": false,
+        "notify_on_close": false,
+        "close": {
+            "type": "plain_text",
+            "text": "Cancel",
+            "emoji": true
+        },
+        "submit": {
+            "type": "plain_text",
+            "text": "Submit",
+            "emoji": true
+        },
+        "previous_view_id": null,
+        "root_view_id": "1234321",
+        "app_id": "986789",
+        "external_id": "",
+        "app_installed_team_id": "APPSSS",
+        "bot_id": "B0T_YO"
+    },
+    "response_urls": []
+}

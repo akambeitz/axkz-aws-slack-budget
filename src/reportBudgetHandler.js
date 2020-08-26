@@ -52,7 +52,7 @@ const convertBudgetReportToSlackBlocks = budgetReport => {
 const postBudgetReportToSlack = async (budgetReportForSlack) => {
   const body = {
     channel: process.env.SLACK_CHANNEL,  // TODO: reference env variables
-    username: "AxKz-Budget-Bot",
+    username: 'AxKz-Budget-Bot',
     blocks: [],
     text: ':heavy_dollar_sign:',
     icon_emoji: ':heavy_dollar_sign:'
@@ -78,6 +78,18 @@ const reportBudget = async event => {
   };
 };
 
+const budgetTableStreamConsumer = async event => {
+  console.log(event);
+  try{
+    await reportBudget();
+  }
+  catch(error){
+    console.error(error);
+  };
+  return {statusCode: 200};
+}
+
 module.exports = {
-  reportBudget
+  reportBudget,
+  budgetTableStreamConsumer
 }

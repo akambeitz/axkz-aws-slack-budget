@@ -32,6 +32,24 @@ functions:
     name: slack-budget-report
     description: Handle reporting of current month's budget
     reservedConcurrency: 1
+    environment:
+      SLACK_URL: TBD
+      SLACK_CHANNEL: TBD
+
+  budgetTableStreamConsumer:
+    handler: src/reportBudgetHandler.budgetTableStreamConsumer
+    name: slack-budget-table-stream-consumer
+    description: Handle reporting of current month's budget on table change
+    reservedConcurrency: 1
+    environment:
+      SLACK_URL: TBD
+      SLACK_CHANNEL: TBD
+    events:
+      - stream:
+          type: dynamodb
+          batchSize: 1
+          enabled: true
+          arn: { "Fn::GetAtt": ["SlackBudget", "StreamArn"] }
 
   budgetAddCategoryExpense:
     handler: src/addExpenseBudgetHandler.addBudgetCategoryExpense
@@ -63,5 +81,7 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+        StreamSpecification:
+          StreamViewType: NEW_IMAGE
 
     
