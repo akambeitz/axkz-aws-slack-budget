@@ -94,7 +94,8 @@ const addBudgetCategoryExpense = async event => {
         const state = get(event, 'view.state.values', {});
         console.log(state);
         const category = get(state, `${modalSubmitBudgetCategoryId}.${modalSubmitBudgetCategoryId}.selected_option.value`);
-        const expense = get(state, `${modalSubmitBudgetExpenseId}.${modalSubmitBudgetExpenseId}.value`);
+        const expenseRaw = get(state, `${modalSubmitBudgetExpenseId}.${modalSubmitBudgetExpenseId}.value`, '0');
+        const expense = parseInt(expenseRaw.replace('$',''),10);
         const description = get(JSON.parse(get(event, `view.private_metadata`, '{}')), 'description', '');
         console.log(`Received expense: ${expense} toward ${category} (${description})`);
 

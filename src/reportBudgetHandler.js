@@ -27,7 +27,8 @@ const buildBudgetReport = monthlyBudgetData => {
   return monthlyBudgetData.map(budgetEntry => {
     const {category, allowance, expenses} = budgetEntry;
     const sumExpenses = expenses.reduce((acc,expense) => {
-      return acc + (expense.amount || 0);
+      const amount = expense.amount ? parseInt(expense.amount, 10) : 0;
+      return acc + amount;
     }, 0);
     const remaining = (allowance - sumExpenses);
     return {

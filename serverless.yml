@@ -32,6 +32,11 @@ functions:
     name: slack-budget-report
     description: Handle reporting of current month's budget
     reservedConcurrency: 1
+    events:
+      - schedule: 
+          name: slack-budget-weekly-report
+          description: '20:00 UTC each Sunday, send current budget report to Slack'
+          rate: cron(0 20 ? * SUN *)
     environment:
       SLACK_URL: TBD
       SLACK_CHANNEL: TBD
