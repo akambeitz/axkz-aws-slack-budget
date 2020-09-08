@@ -1,0 +1,42 @@
+{
+    "Records": [
+        {
+            "eventID": "e2441f55b3363a378c4723b9ab06f661",
+            "eventName": "MODIFY",
+            "eventVersion": "1.1",
+            "eventSource": "aws:dynamodb",
+            "awsRegion": "us-east-2",
+            "dynamodb": [
+                {
+                    "ApproximateCreationDateTime": 1598453133,
+                    "Keys": {
+                        "timeframe": {
+                            "S": "20-07"
+                        },
+                        "category": {
+                            "S": "car-gas"
+                        }
+                    },
+                    "NewImage": {
+                        "timeframe": {
+                            "S": "20-07"
+                        },
+                        "allowance": {
+                            "N": "101"
+                        },
+                        "category": {
+                            "S": "car-gas"
+                        },
+                        "expenses": {
+                            "L": []
+                        }
+                    },
+                    "SequenceNumber": "120020900000000002328941177",
+                    "SizeBytes": 81,
+                    "StreamViewType": "NEW_IMAGE"
+                }
+            ],
+            "eventSourceARN": "arn:aws:dynamodb:us-east-2:00000000:table/test/stream/2020-08-26T13:49:36.355"
+        }
+    ]
+}

@@ -5,6 +5,7 @@ const DDB = new AWS.DynamoDB.DocumentClient();
 const {slackPost} = require("axkz-node-slack-driver/src/postMessage");
 const {buildSectionBlock} = require("axkz-node-slack-driver/src/blocks/section");
 const {currentTimeframe} = require('./utilities');
+const get = require('lodash.get');
 
 const getBudgetData = async (timeframe) => {
   const params = {
@@ -60,6 +61,31 @@ const postBudgetReportToSlack = async (budgetReportForSlack) => {
   await slackPost(process.env.SLACK_URL, body, budgetReportForSlack); 
 };
 
+const convertBudgetCategoryUpdateToSlackBlocks = categoryUpdateImage => {
+  const {timeframe, category, allowance, expenses} = categoryUpdateImage;
+  const expenseReport = expenses.map(expense => {
+    const sectionText = ` - *$${expense.amount}*: _${expense.description}_`;
+    return buildSectionBlock(sectionText);
+  });
+  const expenseReportTotalAmount = expenses.reduce((accumulator,expense) => {
+    accumulator = accumulator + parseInt(expense.amount, 10);
+    return accumulator;
+  }, 0);
+  const categoryReport = buildSectionBlock(`Update to category "${category}".\nSpent so far in 20${timeframe}: $${expenseReportTotalAmount} of $${allowance}`);
+  return [categoryReport].concat(expenseReport);
+};
+
+const postBudgetCategoryUpdateToSlack = async (budgetCategoryUpdateForSlack) => {
+  const body = {
+    channel: process.env.SLACK_CHANNEL,  // TODO: reference env variables
+    username: 'AxKz-Budget-Bot',
+    blocks: [],
+    text: ':heavy_dollar_sign:',
+    icon_emoji: ':heavy_dollar_sign:'
+  };
+  await slackPost(process.env.SLACK_URL, body, budgetCategoryUpdateForSlack); 
+};
+
 const reportBudget = async event => {
   try{
     const monthlyBudgetData = await getBudgetData(currentTimeframe());
@@ -79,9 +105,15 @@ const reportBudget = async event => {
 };
 
 const budgetTableStreamConsumer = async event => {
-  console.log(event);
   try{
-    await reportBudget();
+    console.log(JSON.stringify(event));
+    const newImageMarshalled = get(event,'Records[0].dynamodb.NewImage',{});
+    const newImage = AWS.DynamoDB.Converter.unmarshall(newImageMarshalled)
+    console.log(newImageMarshalled);
+    console.log(newImage);
+    const budgetCategoryUpdateForSlack = convertBudgetCategoryUpdateToSlackBlocks(newImage);
+    console.log(budgetCategoryUpdateForSlack);
+    await postBudgetCategoryUpdateToSlack(budgetCategoryUpdateForSlack);
   }
   catch(error){
     console.error(error);

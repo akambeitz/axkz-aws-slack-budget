@@ -4,6 +4,7 @@ AWS.config.update({region: 'us-east-2'});
 const DDB = new AWS.DynamoDB.DocumentClient();
 
 const budgetTemplate = [
+    { 'phones': 180 },
     { 'fun-alex': 30 },
     { 'car-gas': 100 },
     { 'car-insurance': 140 },
@@ -19,10 +20,10 @@ const budgetTemplate = [
     { 'groceries': 480 },
     { 'home-electric': 90 },
     { 'home-gas': 30 },
-    { 'home-rent': 1264 },
+    { 'home-rent': 1289 },
     { 'home-rent-insurance': 10 },
-    { 'home-wifi': 45 },
-    { 'home-househod': 75 },
+    { 'home-wifi': 60 },
+    { 'home-household': 75 },
     { 'fun-kambeitz': 200 },
     { 'restaurant': 100 },
     { 'misc': 50 },
@@ -36,7 +37,7 @@ const setupBudget = async () => {
             category: Object.keys(category)[0],
             allowance: category[Object.keys(category)[0]],
             expenses: [],
-            timeframe: '20-07'
+            timeframe: '20-10'
         };
         const params = {
             TableName: "budget",
