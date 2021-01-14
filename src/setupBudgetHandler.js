@@ -31,6 +31,8 @@ const budgetTemplate = [
     { 'fun-projects': 50 }
   ];
 
+// TODO: stand up new lambda to run this operation each month.
+// TODO: move above JSON into Dynamo config table for easier access to edit and create new month's budget (UI component)
 const setupBudget = async () => {
     const budgetMonthPutPromises = budgetTemplate.map(category => {
         const budgetItem = {
