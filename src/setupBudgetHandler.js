@@ -39,7 +39,7 @@ const setupBudget = async () => {
             category: Object.keys(category)[0],
             allowance: category[Object.keys(category)[0]],
             expenses: [],
-            timeframe: '21-01'
+            timeframe: '21-02'
         };
         const params = {
             TableName: "budget",
